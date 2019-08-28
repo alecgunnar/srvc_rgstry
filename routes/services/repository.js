@@ -1,4 +1,5 @@
 const validator = require('./validator')
+const DataError = require('./DataError')
 
 const services = [];
 const index = {};
@@ -7,7 +8,7 @@ const grabService = (id) => {
     const location = index[id]
 
     if (typeof location === 'undefined')
-        throw new Error('DOES NOT EXIST')
+        throw new DataError('NONEXISTENT')
     
     return services[location]
 }
@@ -26,12 +27,12 @@ const getService = (id) => {
 
 const saveService = (data) => {
     if (!(service = validator.validateService(data)))
-        throw new Error('INVALID')
+        throw new DataError('INVALID')
 
     const {id} = service
 
     if (index.hasOwnProperty(id))
-        throw new Error('DUPLICATE')
+        throw new DataError('DUPLICATE')
 
     services.push(service)
     index[id] = services.findIndex(service => service.id === id)
@@ -44,7 +45,7 @@ const saveService = (data) => {
 
 const saveInstance = (addTo, data) => {
     if (!(instance = validator.validateInstance(data)))
-        throw new Error('INVALID')
+        throw new DataError('INVALID')
 
     const service = grabService(addTo.id)
 
@@ -53,7 +54,7 @@ const saveInstance = (addTo, data) => {
     )
 
     if (existingInstance)
-        throw new Error('DUPLICATE')
+        throw new DataError('DUPLICATE')
 
     service.instances.push(instance)
 }
