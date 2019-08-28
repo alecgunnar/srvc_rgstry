@@ -2,9 +2,9 @@
   "name": "srvc-rgstry",
   "version": "1.0.0-beta.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/index.js"
   },
   "author": "",
   "license": "ISC",
@@ -12,5 +12,11 @@
     "express": "^4.17.1",
     "mustache": "^3.0.3",
     "mustache-express": "^1.2.8"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "chai-subset": "^1.6.0",
+    "mocha": "^6.2.0"
   }
 }
