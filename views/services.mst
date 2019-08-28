@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Available Services</title>
+        <link rel="stylesheet" href="/styles.css" />
+    </head>
+    <body>
+        <h1>Available Services</h1>
+        <ul>
+            {{#services}}
+                <li>
+                    {{name}} [<a href="/services/{{id}}" class="dull">{{id}}</a>]<br />
+                    {{description}}
+                </li>
+            {{/services}}
+        </ul>
+    </body>
+</html>
