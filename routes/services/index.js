@@ -1,6 +1,13 @@
 const router = require('express').Router()
 const repository = require('./repository')
 
+const mapErrorToStatus =  (err) => {
+    if (err.message === 'DUPLICATE')
+        return 409
+
+    return 400
+}
+
 router.param('service', (req, res, next, id) => {
     const service = repository.getService(id)
 
@@ -40,18 +47,34 @@ router.post('/services', (req, res) => {
     if (!req.is('application/json'))
         return res.sendStatus(415)
 
-    res.sendStatus(
+    let status = 201
+
+    try {
         repository.saveService(req.body)
-    )
+    } catch (err) {
+        status = mapErrorToStatus(err)
+    }
+
+    res.sendStatus(status)
 })
 
 router.post('/services/:service/instances', (req, res) => {
     if (!req.is('application/json'))
         return res.sendStatus(415)
 
-        res.sendStatus(
+    const instanceExists = typeof req.service.instances.find(instance => instance.address === req.body.address) !== 'undefined'
+    let status = instanceExists ? 200 : 201
+
+    try {
+        if (instanceExists)
+            repository.touchInstance(req.service, req.body.address)
+        else
             repository.saveInstance(req.service, req.body)
-        )
+    } catch (err) {
+        status = mapErrorToStatus(err)
+    }
+
+    res.sendStatus(status)
 })
 
 module.exports = router

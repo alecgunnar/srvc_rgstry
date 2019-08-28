@@ -6,6 +6,10 @@ class Service {
         this.instances = []
     }
 
+    grabInstance (address) {
+        return this.instances.find(instance => instance.address === address)
+    }
+
     toJson () {
         return {
             id: this.id,
